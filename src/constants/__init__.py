@@ -1,0 +1,44 @@
+import os
+
+BEST_SCORE_FILE = os.path.abspath('best_score.txt')
+
+FPS = 30
+DEFAULT_SPEED = 7
+TITLE = 'Snake'
+FONT = 'monospace'
+FONT_SIZE = 16
+BUTTON_FONT_SIZE = 25
+BUTTON_MARGIN = 20
+BUTTON_RADIUS = 20
+
+SCREEN_SIZE = (500, 500)
+GRID_SIZE = 20
+
+BLOCK_SHAPE = (GRID_SIZE, GRID_SIZE)
+NUM_BLOCKS = (SCREEN_SIZE[0] // GRID_SIZE,
+              SCREEN_SIZE[1] // GRID_SIZE)
+
+SLOW_SPEED = 0.7
+MEDIUM_SPEED = 1.
+FAST_SPEED = 1.3
+TIME_TO_START_ACCELERATION_MS = 1000
+
+COLORS = {
+    'ADDITIONAL_BACKGROUND': (93, 216, 228),
+    'MAIN_BACKGROUND': (84, 194, 205),
+    'BUTTON': (255, 255, 255),
+    'BUTTON_PRESSED': (0, 0, 0),
+    'SCORE_TEXT_COLOR': (0, 0, 0),
+    'SNAKE_SLOW': (0, 255, 0),
+    'SNAKE_MEDIUM': (0, 0, 255),
+    'SNAKE_FAST': (255, 0, 0),
+    'SNAKE_HEAD': (17, 24, 47),
+    'SNACK': (255, 0, 255),
+}
+DIRECTION = {
+    'UP': (0, -1),
+    'DOWN': (0, 1),
+    'LEFT': (-1, 0),
+    'RIGHT': (1, 0),
+    'STOP': (0, 0),
+}

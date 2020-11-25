@@ -1,0 +1,2 @@
+class SnakeDeath(Exception):
+    pass
