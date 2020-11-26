@@ -47,7 +47,7 @@ class Gameplay:
 
         if self.snake.get_head_position() == self.snack.position:
             self.snake.length = self.snake.length + 1
-            self.snake.increment_score()
+            self.snake.increment_score(self.snack.value)
             self.snack = Snack(self.snake)
 
         self.__render_snake()

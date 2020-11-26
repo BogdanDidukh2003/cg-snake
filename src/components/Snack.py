@@ -1,15 +1,20 @@
 import random
 import pygame as pg
-from src.constants import COLORS, NUM_BLOCKS
+from src.constants import COLORS, NUM_BLOCKS, DEFAULT_SCORE_VALUE
 from src.logic import get_block_rect
 
 
 class Snack:
-    def __init__(self, snake):
+    def __init__(self, snake, init_value=DEFAULT_SCORE_VALUE):
         self.__snake = snake
         self.__position = (0, 0)
         self.__color = COLORS['SNACK']
         self.__assign_position()
+        self.__value = init_value
+
+    @property
+    def value(self):
+        return self.__value
 
     @property
     def position(self):

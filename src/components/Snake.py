@@ -69,8 +69,8 @@ class Snake:
     def set_acceleration(self, is_acceleration):
         self.__is_acceleration = is_acceleration
 
-    def increment_score(self):
-        self.__score += 1
+    def increment_score(self, value):
+        self.__score += value
 
     def render(self, surface):
         if len(self.__positions) > self.__length:

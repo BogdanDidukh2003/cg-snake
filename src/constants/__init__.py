@@ -4,6 +4,7 @@ BEST_SCORE_FILE = os.path.abspath('best_score.txt')
 
 FPS = 30
 DEFAULT_SPEED = 7
+DEFAULT_SCORE_VALUE = 10
 TITLE = 'Snake'
 FONT = 'monospace'
 FONT_SIZE = 16
