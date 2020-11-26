@@ -56,6 +56,8 @@ class Snake:
             self.__direction = direction
 
     def move(self):
+        if self.__direction == DIRECTION['STOP']:
+            return
         x, y = self.get_head_position()
         new_head_position = format_position((x + self.__direction[0], y + self.__direction[1]))
         if is_position_allowed(new_head_position, self.__positions):

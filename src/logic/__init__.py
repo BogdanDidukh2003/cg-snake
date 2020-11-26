@@ -1,5 +1,6 @@
 import pygame as pg
-from src.constants import BLOCK_SHAPE, GRID_SIZE, NUM_BLOCKS, BEST_SCORE_FILE
+from src.constants import BLOCK_SHAPE, GRID_SIZE, NUM_BLOCKS, BEST_SCORE_FILE, \
+    FONT, TIMER_FONT_SIZE, COLORS
 
 
 def get_best_score():
@@ -54,3 +55,17 @@ def format_position(position):
         y = y_max
 
     return x, y
+
+
+def render_timer(screen: pg.Surface, seconds, render_background):
+    title_font = pg.font.SysFont(FONT, TIMER_FONT_SIZE, bold=True)
+
+    for i in range(seconds, 0, -1):
+        title = title_font.render(str(i), True, COLORS['TIMER_TEXT_COLOR'])
+        width, height = screen.get_size()
+        render_background()
+        screen.blit(title,
+                    (width // 2 - title.get_size()[0] // 2,
+                     height // 2 - title.get_size()[1] // 2))
+        pg.display.update()
+        pg.time.delay(1000)

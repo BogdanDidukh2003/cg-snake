@@ -3,7 +3,8 @@ import pygame as pg
 from src.constants import FPS, SCREEN_SIZE, TITLE, DIRECTION, DEFAULT_SPEED, \
     SLOW_SPEED, MEDIUM_SPEED, FAST_SPEED, TIME_TO_START_ACCELERATION_MS
 from src.exceptions import SnakeDeath
-from src.screens import Gameplay, Menu, BestScore
+from src.logic import render_timer
+from src.screens import Gameplay, Menu, BestScore, Pause
 
 
 def mainloop():
@@ -18,6 +19,9 @@ def mainloop():
     is_best_score = False
     is_select_speed_menu = False
     is_game = False
+
+    is_pause = False
+    saved_direction = DIRECTION['STOP']
 
     is_speed_selected = False
     direction = DIRECTION['STOP']
@@ -74,6 +78,17 @@ def mainloop():
 
     best_score_screen = BestScore(screen,
                                   back_button_callback=back_button_callback)
+
+    def continue_callback():
+        nonlocal is_pause, direction, gameplay
+
+        render_timer(screen, seconds=3,
+                     render_background=lambda: gameplay.render(direction=DIRECTION['STOP']))
+
+        is_pause = False
+        direction = saved_direction
+
+    pause = Pause(screen, continue_callback=continue_callback)
     gameplay = None
 
     while is_running:
@@ -98,6 +113,10 @@ def mainloop():
                     direction = DIRECTION['RIGHT']
                     keypress_start = pg.time.get_ticks()
                     key_is_pressed = True
+                elif event.key == pg.K_ESCAPE:
+                    if is_game:
+                        is_pause = True
+                        saved_direction = direction
             elif event.type == pg.KEYUP:
                 if event.key == pg.K_UP:
                     key_is_pressed = False
@@ -126,13 +145,17 @@ def mainloop():
             is_main_menu = False
             best_score_screen.render(events)
         if is_game:
-            if key_is_pressed:
-                if pg.time.get_ticks() - keypress_start >= TIME_TO_START_ACCELERATION_MS:
-                    accelerate_snake = True
-            gameplay.snake.set_acceleration(accelerate_snake)
-
             try:
-                gameplay.render(direction=direction)
+                if is_pause:
+                    gameplay.render(direction=DIRECTION['STOP'])
+                    pause.render(events)
+                else:
+                    if key_is_pressed:
+                        if pg.time.get_ticks() - keypress_start >= TIME_TO_START_ACCELERATION_MS:
+                            accelerate_snake = True
+                    gameplay.snake.set_acceleration(accelerate_snake)
+
+                    gameplay.render(direction=direction)
             except SnakeDeath:
                 is_game = False
                 is_main_menu = True
