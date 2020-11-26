@@ -43,6 +43,13 @@ class Gameplay:
 
         if 'direction' in kwargs:
             self.snake.change_direction(kwargs['direction'])
+        if 'level' in kwargs:
+            self.snake.update_level(kwargs['level'])
+        if 'speed_bonus' in kwargs:
+            self.snake.set_speed_bonus(kwargs['speed_bonus'])
+        else:
+            self.snake.set_speed_bonus()
+
         self.snake.move()
 
         if self.snake.get_head_position() == self.snack.position:

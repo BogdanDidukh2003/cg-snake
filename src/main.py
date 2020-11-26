@@ -31,6 +31,9 @@ def mainloop():
     key_is_pressed = False
     accelerate_snake = False
 
+    level = 0
+    speed_bonus = 1
+
     def start_button_callback():
         nonlocal is_select_speed_menu
         is_select_speed_menu = True
@@ -155,10 +158,17 @@ def mainloop():
                             accelerate_snake = True
                     gameplay.snake.set_acceleration(accelerate_snake)
 
-                    gameplay.render(direction=direction)
+                    gameplay.render(
+                        direction=direction,
+                        level=level,
+                        speed_bonus=speed_bonus,
+                    )
             except SnakeDeath:
                 is_game = False
                 is_main_menu = True
+
+        if is_game:
+            level = (gameplay.snake.length - 1) // 5
 
         pg.display.update()
         if is_game:

@@ -5,10 +5,12 @@ from src.logic import get_block_rect, is_position_allowed, format_position, set_
 
 
 class Snake:
-    def __init__(self, speed=1., init_score=0,
+    def __init__(self, speed=1., init_score=0, init_level=0,
                  init_position=(NUM_BLOCKS[0] // 2, NUM_BLOCKS[1] // 2)):
         self.__score = init_score
+        self.__level = init_level
         self.__speed = 0
+        self.__speed_bonus = 1
         self.__color = (0, 0, 0)
         self.set_speed(speed)
         self.__length = 1
@@ -35,7 +37,8 @@ class Snake:
 
     @property
     def speed(self):
-        return self.__speed + (0.5 if self.__is_acceleration else 0)
+        return (self.__speed + min(self.__level, 10) / 10 + (0.5 if self.__is_acceleration else 0)
+                ) * self.__speed_bonus
 
     def set_speed(self, speed):
         if speed < 0:
@@ -69,8 +72,20 @@ class Snake:
     def set_acceleration(self, is_acceleration):
         self.__is_acceleration = is_acceleration
 
+    def update_level(self, level):
+        if level < 0:
+            self.__level = 0
+        else:
+            self.__level = level
+
+    def set_speed_bonus(self, bonus=None):
+        if bonus:
+            self.__speed_bonus = bonus
+        else:
+            self.__speed_bonus = 1.
+
     def increment_score(self, value):
-        self.__score += value
+        self.__score += int(self.__speed * (1 + self.__level / 10) * value)
 
     def render(self, surface):
         if len(self.__positions) > self.__length:
