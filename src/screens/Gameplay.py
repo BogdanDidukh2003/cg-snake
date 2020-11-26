@@ -55,7 +55,10 @@ class Gameplay:
         if self.snake.get_head_position() == self.snack.position:
             self.snake.length = self.snake.length + 1
             self.snake.increment_score(self.snack.value)
-            self.snack = Snack(self.snake)
+            if 'snack_bonus' in kwargs and kwargs['snack_bonus']:
+                self.snack = Snack(self.snake, init_value=200)
+            else:
+                self.snack = Snack(self.snake)
 
         self.__render_snake()
         self.__render_snack()

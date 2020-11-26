@@ -1,3 +1,5 @@
+import random
+
 import pygame as pg
 
 from src.constants import FPS, SCREEN_SIZE, TITLE, DIRECTION, DEFAULT_SPEED, \
@@ -32,6 +34,7 @@ def mainloop():
     accelerate_snake = False
 
     level = 0
+    snack_bonus = False
     speed_bonus = 1
 
     def start_button_callback():
@@ -162,6 +165,7 @@ def mainloop():
                         direction=direction,
                         level=level,
                         speed_bonus=speed_bonus,
+                        snack_bonus=snack_bonus,
                     )
             except SnakeDeath:
                 is_game = False
@@ -169,6 +173,10 @@ def mainloop():
 
         if is_game:
             level = (gameplay.snake.length - 1) // 5
+
+            if snack_bonus:
+                snack_bonus = False
+            snack_bonus = random.uniform(0, 1) <= 0.2 if (gameplay.snake.length - 1) % 2 == 0 else False
 
         pg.display.update()
         if is_game:
