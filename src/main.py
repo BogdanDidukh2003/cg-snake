@@ -3,7 +3,8 @@ import random
 import pygame as pg
 
 from src.constants import FPS, SCREEN_SIZE, TITLE, DIRECTION, DEFAULT_SPEED, \
-    SLOW_SPEED, MEDIUM_SPEED, FAST_SPEED, TIME_TO_START_ACCELERATION_MS
+    SLOW_SPEED, MEDIUM_SPEED, FAST_SPEED, TIME_TO_START_ACCELERATION_MS, \
+    SPEED_BONUS_TIME
 from src.exceptions import SnakeDeath
 from src.logic import render_timer
 from src.screens import Gameplay, Menu, BestScore, Pause
@@ -33,9 +34,11 @@ def mainloop():
     key_is_pressed = False
     accelerate_snake = False
 
+    snake_length = 1
     level = 0
     snack_bonus = False
     speed_bonus = 1
+    speed_bonus_start = pg.time.get_ticks()
 
     def start_button_callback():
         nonlocal is_select_speed_menu
@@ -176,7 +179,31 @@ def mainloop():
 
             if snack_bonus:
                 snack_bonus = False
-            snack_bonus = random.uniform(0, 1) <= 0.2 if (gameplay.snake.length - 1) % 2 == 0 else False
+            if (
+                    speed_bonus != 1
+                    and (pg.time.get_ticks() - speed_bonus_start) >= SPEED_BONUS_TIME
+            ):
+                speed_bonus = 1
+            print(speed_bonus)
+            is_length_updated = gameplay.snake.length - snake_length
+            if is_length_updated:
+                snake_length = gameplay.snake.length
+
+                # Generate bonus
+                if gameplay.snake.length > 1 and (gameplay.snake.length - 1) % 2 == 0:
+                    is_bonus = random.uniform(0, 1) <= 0.2
+                else:
+                    is_bonus = False
+                if is_bonus:
+                    bonus_idx = random.randrange(3)
+                    if bonus_idx == 0:
+                        snack_bonus = True
+                    elif bonus_idx == 1:
+                        speed_bonus = 0.7
+                        speed_bonus_start = pg.time.get_ticks()
+                    elif bonus_idx == 2:
+                        speed_bonus = 1.3
+                        speed_bonus_start = pg.time.get_ticks()
 
         pg.display.update()
         if is_game:
