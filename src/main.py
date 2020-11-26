@@ -184,7 +184,7 @@ def mainloop():
                     and (pg.time.get_ticks() - speed_bonus_start) >= SPEED_BONUS_TIME
             ):
                 speed_bonus = 1
-            print(speed_bonus)
+
             is_length_updated = gameplay.snake.length - snake_length
             if is_length_updated:
                 snake_length = gameplay.snake.length
